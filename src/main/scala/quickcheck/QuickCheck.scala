@@ -42,6 +42,14 @@ abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
     findMin(h3)== List(n, m, k).min
   }
 
+  property("insertThreeAndDelete") = forAll { (n: Int, m: Int, k: Int) =>
+    val h1 = insert(n, empty)
+    val h2 = insert(m, h1)
+    val h3 = insert(k, h2)
+    val max = List(n, m, k).max
+    deleteMin(deleteMin(h3)) == insert(max, empty)
+  }
+
   /**
    * If you insert an element into an empty heap, then delete the
    * minimum, the resulting heap should be empty.
