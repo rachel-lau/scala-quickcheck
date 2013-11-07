@@ -22,10 +22,24 @@ abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
   property("insertTwo") = forAll { (n: Int, m: Int) =>
     val h1 = insert(n, empty)
     val h2 = insert(m, h1)
+    val min = findMin(h2)
     if (n <= m) 
-      findMin(h2) == n
+      min == n
     else
-      findMin(h2) == m
+      min == m
+  }
+
+  /**
+   * n=2147483647 m=1118895033 k=1
+   * h1=List(Node(2147483647,0,List()))
+   * h2=List(Node(1118895033,1,List(Node(2147483647,0,List()))))
+   * h3=List(Node(1,0,List()), Node(1118895033,1,List(Node(2147483647,0,List()))))
+   */
+  property("insertThree") = forAll { (n: Int, m: Int, k: Int) =>
+    val h1 = insert(n, empty)
+    val h2 = insert(m, h1)
+    val h3 = insert(k, h2)
+    findMin(h3)== List(n, m, k).min
   }
 
   /**
