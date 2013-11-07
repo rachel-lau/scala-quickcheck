@@ -37,6 +37,21 @@ abstract class QuickCheckHeap extends Properties("Heap") with IntHeap {
     deleteMin(h) == empty
   }
 
+  /**
+   * Find a minimum of the melding of any two heaps should return a
+   * minimum of one or the other.
+   */
+  property("findMinMeld") = forAll { (n: Int, m: Int) =>
+    val h1 = insert(n, empty)
+    val h2 = insert(m, empty)
+    val h3 = meld(h1, h2)
+    val min = findMin(h3)
+    if (n <= m)
+      min == n
+    else
+      min == m
+  }
+
   lazy val genHeap: Gen[H] = ???
 
   implicit lazy val arbHeap: Arbitrary[H] = Arbitrary(genHeap)
